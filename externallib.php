@@ -20,19 +20,18 @@ class local_courses_external extends external_api
 
     public static function get_courses($page = 1, $per_page = 10)
     {
-        global $DB, $CFG;
-        require_once($CFG->dirroot . '/course/lib.php');
-        require_once($CFG->libdir . '/filelib.php');
+        global $DB;
 
         $offset = ($page - 1) * $per_page;
 
-
+        // Consulta Moodle para obtener cursos con paginación
         $courses = $DB->get_records('course', null, '', '*', $offset, $per_page);
 
         if (empty($courses)) {
             throw new moodle_exception('no_courses', 'local_courses');
         }
 
+        // Obtener el total de cursos
         $total_courses = $DB->count_records('course');
 
         $result = array(
